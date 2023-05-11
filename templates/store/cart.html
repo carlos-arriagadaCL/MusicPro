@@ -3,6 +3,18 @@
 <section class="section-content padding-y bg">
   <div class="container">
     <!-- ============================ COMPONENT 1 ================================= -->
+    {% if not cart_items %}
+    <h2 class="text-center">
+      <strong>¡El carrito esta vacío!</strong> Debes agregar algunos productos
+      al carrito. antes de procesar el pago.
+    </h2>
+    <!-- row.// -->
+    <div class="text-center">
+      <a href="{% url 'store' %}" class="btn btn-primary">Seguir comprando</a>
+    </div>
+    <!-- container .//  -->
+
+    {% else %}
 
     <div class="row">
       <aside class="col-lg-9">
@@ -10,9 +22,9 @@
           <table class="table table-borderless table-shopping-cart">
             <thead class="text-muted">
               <tr class="small text-uppercase">
-                <th scope="col">Product</th>
-                <th scope="col" width="120">Quantity</th>
-                <th scope="col" width="120">Price</th>
+                <th scope="col">Producto</th>
+                <th scope="col" width="120">Cantidad</th>
+                <th scope="col" width="120">Precio</th>
                 <th scope="col" class="text-right" width="200"></th>
               </tr>
             </thead>
@@ -28,12 +40,14 @@
                       />
                     </div>
                     <figcaption class="info">
-                      <a href="#" class="title text-dark"
+                      <a
+                        href="{{ cart_item.product.get_url }}"
+                        class="title text-dark"
                         >{{ cart_item.product.nombre }}</a
                       >
                       <p class="text-muted small">
-                        Color: 25 Mpx <br />
-                        Tamaño: Canon
+                        Color: {{cart_item.product}} <br />
+                        Tamaño: {{cart_item.product}}
                       </p>
                     </figcaption>
                   </figure>
@@ -43,13 +57,14 @@
                   <div class="col">
                     <div class="input-group input-spinner">
                       <div class="input-group-prepend">
-                        <button
+                        <a
+                          href="{% url 'remove_cart' cart_item.product.id %}"
                           class="btn btn-light"
                           type="button"
-                          id="button-plus"
+                          id="button-minus"
                         >
                           <i class="fa fa-minus"></i>
-                        </button>
+                        </a>
                       </div>
                       <input
                         type="text"
@@ -61,7 +76,7 @@
                           href="{% url 'add_cart' cart_item.product.id %}"
                           class="btn btn-light"
                           type="button"
-                          id="button-minus"
+                          id="button-plus"
                         >
                           <i class="fa fa-plus"></i>
                         </a>
@@ -81,7 +96,12 @@
                   <!-- price-wrap .// -->
                 </td>
                 <td class="text-right">
-                  <a href="" class="btn btn-danger"> Remove</a>
+                  <a
+                    href="{% url 'remove_cart_item' cart_item.product.id %}"
+                    class="btn btn-danger"
+                  >
+                    Remove</a
+                  >
                 </td>
               </tr>
               {% endfor %}
@@ -113,10 +133,10 @@
               <img src="{% static './images/misc/payments.png'%}" height="26" />
             </p>
             <a href="./place-order.html" class="btn btn-primary btn-block">
-              Checkout
+              Pagar ahora
             </a>
-            <a href="./store.html" class="btn btn-light btn-block"
-              >Continue Shopping</a
+            <a href="{% url 'store' %}" class="btn btn-light btn-block"
+              >Seguir comprando</a
             >
           </div>
           <!-- card-body.// -->
@@ -126,6 +146,7 @@
       <!-- col.// -->
     </div>
     <!-- row.// -->
+    {% endif %}
     <!-- ============================ COMPONENT 1 END .// ================================= -->
   </div>
   <!-- container .//  -->

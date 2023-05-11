@@ -1,8 +1,7 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from .models import Cart, CartItem
-from almacen.models import Producto
+from django.shortcuts import get_object_or_404, redirect, render
 from django.core.exceptions import ObjectDoesNotExist
+from almacen.models import Producto, Variacion
+from .models import Cart, CartItem
 
 # Create your views here.
 
@@ -14,6 +13,18 @@ def _cart_id(request):
 
 def add_cart(request, product_id):
     product = Producto.objects.get(id=product_id) # obtener el producto
+    product_variation = [] # lista de variaciones
+    if request.method == 'POST':
+        for item in request.POST:
+            key = item
+            value = request.POST[key] # obtener el valor del input
+
+            try:
+                variation = Variacion.objects.get(product=product_id, variation_category__iexact=key, variation_value__iexact=value)
+                product_variation.append(variation) # agregar la variacion a la lista
+            except:
+                pass
+
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request)) # obtener el carrito usando el id de la sesion
     except Cart.DoesNotExist:
@@ -33,11 +44,30 @@ def add_cart(request, product_id):
             cart = cart
         )
         cart_item.save()
-    return HttpResponse(cart_item.quantity)
+    return redirect('cart')
+
+def remove_cart(request, product_id):
+    cart = Cart.objects.get(cart_id=_cart_id(request)) # obtener el carrito usando el id de la sesion
+    product = get_object_or_404(Producto, id=product_id) # obtener el producto
+    cart_item = CartItem.objects.get(product=product, cart=cart) # obtener el item del carrito
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1 # disminuir la cantidad
+        cart_item.save()
+    else:
+        cart_item.delete()
+    return redirect('cart')
+
+def remove_cart_item(request, product_id):
+    cart = Cart.objects.get(cart_id=_cart_id(request)) # obtener el carrito usando el id de la sesion
+    product = get_object_or_404(Producto, id=product_id) # obtener el producto
+    cart_item = CartItem.objects.get(product=product, cart=cart) # obtener el item del carrito
+    cart_item.delete()
     return redirect('cart')
 
 def cart(request, total=0, quantity=0, cart_items=None):
     try:
+        tax = 0
+        grand_total = 0
         cart = Cart.objects.get(cart_id=_cart_id(request)) # obtener el carrito usando el id de la sesion
         cart_items = CartItem.objects.filter(cart=cart, is_active=True) # obtener los items del carrito
         for cart_item in cart_items:
@@ -55,5 +85,5 @@ def cart(request, total=0, quantity=0, cart_items=None):
         'tax': tax,
         'grand_total': grand_total,
     }
-    
+
     return render(request, 'store/cart.html', context)

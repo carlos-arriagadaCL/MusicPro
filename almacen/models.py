@@ -21,3 +21,30 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class VariacionManager(models.Manager):
+    def colors(self):
+        return super(VariacionManager, self).filter(variation_category='color', is_active=True)
+
+    def sizes(self):
+        return super(VariacionManager, self).filter(variation_category='size', is_active=True)
+
+variation_category_choice = (
+    ('color', 'color'),
+    ('size', 'size'),
+)
+
+class Variacion(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    variation_category = models.CharField(max_length=100, choices=variation_category_choice)
+    variation_value = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    objects = VariacionManager()
+    class Meta:
+        verbose_name = 'Variación'
+        verbose_name_plural = 'Variaciones'
+
+    def __str__(self):
+        return self.variation_value
