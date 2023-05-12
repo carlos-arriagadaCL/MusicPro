@@ -2,18 +2,15 @@
 
 <section class="section-content padding-y bg">
   <div class="container">
-    <!-- ============================ COMPONENT 1 ================================= -->
+    <!-- ============================ COMPONENT CART ================================= -->
     {% if not cart_items %}
     <h2 class="text-center">
       <strong>¡El carrito esta vacío!</strong> Debes agregar algunos productos
       al carrito. antes de procesar el pago.
     </h2>
-    <!-- row.// -->
     <div class="text-center">
       <a href="{% url 'store' %}" class="btn btn-primary">Seguir comprando</a>
     </div>
-    <!-- container .//  -->
-
     {% else %}
 
     <div class="row">
@@ -46,22 +43,21 @@
                         >{{ cart_item.product.nombre }}</a
                       >
                       <p class="text-muted small">
-                        Color: {{cart_item.product}} <br />
-                        Tamaño: {{cart_item.product}}
+                        {% if cart_item.variations.all %} {% for item in cart_item.variations.all %} {{ item.variation_category | capfirst }}: {{ item.variation_value | capfirst}} <br />
+                        {% endfor %} {% endif %}
                       </p>
                     </figcaption>
                   </figure>
                 </td>
                 <td>
-                  <!-- col.// -->
                   <div class="col">
                     <div class="input-group input-spinner">
                       <div class="input-group-prepend">
                         <a
-                          href="{% url 'remove_cart' cart_item.product.id %}"
+                          href="{% url 'remove_cart' cart_item.product.id cart_item.id %}"
                           class="btn btn-light"
                           type="button"
-                          id="button-minus"
+                          id="button-plus"
                         >
                           <i class="fa fa-minus"></i>
                         </a>
@@ -72,19 +68,28 @@
                         value="{{ cart_item.quantity }}"
                       />
                       <div class="input-group-append">
-                        <a
-                          href="{% url 'add_cart' cart_item.product.id %}"
-                          class="btn btn-light"
-                          type="button"
-                          id="button-plus"
+                        <form
+                          action="{% url 'add_cart' cart_item.product.id %}"
+                          method="POST"
                         >
-                          <i class="fa fa-plus"></i>
-                        </a>
+                          {% csrf_token %} {% for item in cart_item.variations.all %}
+                          <input
+                            type="hidden"
+                            name="{{ item.variation_category | lower }}"
+                            value="{{ item.variation_value | capfirst }}"
+                          />
+                          {% endfor %}
+                          <button
+                            class="btn btn-light"
+                            type="submit"
+                            id="button-minus"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </form>
                       </div>
                     </div>
-                    <!-- input-group.// -->
                   </div>
-                  <!-- col.// -->
                 </td>
                 <td>
                   <div class="price-wrap">
@@ -93,14 +98,14 @@
                       $ {{ cart_item.product.precio }} c/u
                     </small>
                   </div>
-                  <!-- price-wrap .// -->
                 </td>
                 <td class="text-right">
                   <a
-                    href="{% url 'remove_cart_item' cart_item.product.id %}"
+                    href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}"
+                    onclick="return confirm('¿Estas seguro de eliminar este producto?')"
                     class="btn btn-danger"
                   >
-                    Remove</a
+                    Eliminar</a
                   >
                 </td>
               </tr>
@@ -108,9 +113,7 @@
             </tbody>
           </table>
         </div>
-        <!-- card.// -->
       </aside>
-      <!-- col.// -->
       <aside class="col-lg-3">
         <div class="card">
           <div class="card-body">
@@ -139,17 +142,11 @@
               >Seguir comprando</a
             >
           </div>
-          <!-- card-body.// -->
         </div>
-        <!-- card.// -->
       </aside>
-      <!-- col.// -->
     </div>
-    <!-- row.// -->
     {% endif %}
-    <!-- ============================ COMPONENT 1 END .// ================================= -->
+    <!-- ============================ COMPONENT CART END .// ================================= -->
   </div>
-  <!-- container .//  -->
 </section>
-<!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock %}

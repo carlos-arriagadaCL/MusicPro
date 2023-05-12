@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-<!-- ========================= SECTION MAIN ========================= -->
+<!-- ========================= SECTION BANNER ========================= -->
 <section class="section-intro padding-y-sm">
   <div class="container">
     <div class="intro-banner-wrap">
@@ -11,9 +11,9 @@
   </div>
   <!-- container //  -->
 </section>
-<!-- ========================= SECTION MAIN END// ========================= -->
+<!-- ========================= SECTION BANNER END// ========================= -->
 
-<!-- ========================= SECTION  ========================= -->
+<!-- ========================= SECTION ARTICULOS  ========================= -->
 <section class="section-name padding-y-sm">
   <div class="container">
     <header class="section-heading">
@@ -38,18 +38,12 @@
             <a href="{{ producto.get_url }}" class="price mt-1">
               <div class="price mt-1">{{ producto.precio }}</div>
             </a>
-            <!-- price-wrap.// -->
           </figcaption>
         </div>
       </div>
-
-      <!-- col.// -->
       {% endfor %}
     </div>
-    <!-- row.// -->
   </div>
-  <!-- container // -->
 </section>
-<!-- ========================= SECTION  END// ========================= -->
-
+<!-- ========================= SECTION ARTICULOS END// ========================= -->
 {% endblock content %}
