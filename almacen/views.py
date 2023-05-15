@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404
 
 from carts.models import CartItem
 from carts.views import _cart_id
-from .models import Producto
+from carts.context_processors import counter
+from .models import Producto, Variation
 from categoria.models import Categoria
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
@@ -12,6 +13,7 @@ from django.db.models import Q
 def store(request, category_slug=None):
     categorias = None
     productos = None
+    variaciones = None
 
     if category_slug != None:
         categorias = get_object_or_404(Categoria, slug=category_slug)
@@ -44,6 +46,7 @@ def product_detail(request, category_slug, product_slug):
     context = {
         'single_product': single_product,
         'in_cart': in_cart,
+        'counter': counter(request).get('cart_count'),
     }
     return render(request, 'store/product_detail.html', context)
 

@@ -65,30 +65,17 @@
                 class=""
               >
                 <i class="icon-control fa fa-chevron-down"></i>
-                <h6 class="title">Sizes</h6>
+                <h6 class="title">Tamaños</h6>
               </a>
             </header>
             <div class="filter-content collapse show" id="collapse_4" style="">
               <div class="card-body">
+                {% for variacion in variaciones %}
                 <label class="checkbox-btn">
                   <input type="checkbox" />
-                  <span class="btn btn-light"> XS </span>
+                  <span class="btn btn-light"> {{variacion}} </span>
                 </label>
-
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> SM </span>
-                </label>
-
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> LG </span>
-                </label>
-
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> XXL </span>
-                </label>
+                {% endfor %}
               </div>
               <!-- card-body.// -->
             </div>
@@ -105,14 +92,14 @@
                 class=""
               >
                 <i class="icon-control fa fa-chevron-down"></i>
-                <h6 class="title">Price range</h6>
+                <h6 class="title">Rango de precios</h6>
               </a>
             </header>
             <div class="filter-content collapse show" id="collapse_3" style="">
               <div class="card-body">
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label>Min</label>
+                    <label>Minimo</label>
                     <!-- <input class="form-control" placeholder="$0" type="number"> -->
                     <select class="mr-2 form-control">
                       <option value="0">$0</option>
@@ -125,7 +112,7 @@
                     </select>
                   </div>
                   <div class="form-group text-right col-md-6">
-                    <label>Max</label>
+                    <label>Maximo</label>
                     <select class="mr-2 form-control">
                       <option value="50">$50</option>
                       <option value="100">$100</option>
@@ -138,7 +125,7 @@
                   </div>
                 </div>
                 <!-- form-row.// -->
-                <button class="btn btn-block btn-primary">Apply</button>
+                <button class="btn btn-block btn-primary">Aplicar</button>
               </div>
               <!-- card-body.// -->
             </div>
