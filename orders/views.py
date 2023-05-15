@@ -25,6 +25,7 @@ def place_order(request, total=0, quantity=0):
         total += (cart_item.product.precio * cart_item.quantity) # obtener el total
         quantity += cart_item.quantity # obtener la cantidad
         tax = (19 * total)/100 # obtener el impuesto
+        tax = round(tax)
     grand_total = total + tax # obtener el total con impuesto
 
     if request.method == 'POST':

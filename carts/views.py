@@ -177,6 +177,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
             total += (cart_item.product.precio * cart_item.quantity) # obtener el total
             quantity += cart_item.quantity # obtener la cantidad
         tax = (19 * total)/100 # obtener el impuesto
+        tax = round(tax)
         grand_total = total + tax # obtener el total con impuesto
     except ObjectDoesNotExist:
         pass # solo ignorar
@@ -206,6 +207,7 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             total += (cart_item.product.precio * cart_item.quantity) # obtener el total
             quantity += cart_item.quantity # obtener la cantidad
         tax = (19 * total)/100 # obtener el impuesto
+        tax = round(tax)
         grand_total = total + tax # obtener el total con impuesto
     except ObjectDoesNotExist:
         pass # solo ignorar
