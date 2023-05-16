@@ -3,13 +3,56 @@ from django.shortcuts import render, redirect
 from carts.models import CartItem
 from .models import Order
 from .forms import OrderForm
-
+from transbank.webpay.transaccion_completa.transaction import *
+from transbank.common.integration_type import *
+import requests
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
 def payments(request):
     return render(request, 'orders/payments.html')
 
+@csrf_exempt
+def realizar_pago(request):
+    if request.method == 'POST':
+        buy_order = request.POST['buy_order']
+        session_id = request.POST['session_id']
+        amount = request.POST['amount']
+
+        # URL de la API de Transbank Webpay para ambiente de integración
+        url = 'https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.0/transactions'
+
+        # Datos de la transacción
+        payload = {
+            'buy_order': buy_order,
+            'session_id': session_id,
+            'amount': amount,
+            'return_url': 'http://127.0.0.1:8000/orders/payments_complete/'
+        }
+
+        # Headers requeridos
+        headers = {
+            'Tbk-Api-Key-Id': '597055555532',
+            'Tbk-Api-Key-Secret': '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
+            'Content-Type': 'application/json'
+        }
+
+        # Realizar la solicitud POST a la API de Transbank
+        response = requests.post(url, json=payload, headers=headers, verify=True)
+
+        # Obtener la respuesta
+        if response.status_code == 200:
+            respuesta = response.json()
+
+            # Aquí puedes procesar la respuesta de la API
+            return redirect(respuesta['url']+f'?token_ws={respuesta["token"]}')
+        else:
+            return render(request, 'orders/payments.html')
+
+@csrf_exempt
+def payments_complete(request):
+    return render(request, 'orders/payments_complete.html')
 
 def place_order(request, total=0, quantity=0):
     current_user = request.user

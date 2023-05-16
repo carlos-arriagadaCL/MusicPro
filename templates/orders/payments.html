@@ -103,6 +103,16 @@
                 <img src="{% static './images/misc/payments.png'%}" height="26" />
               </p>
             </div>
+            <form action="{% url 'realizar_pago' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="buy_order" value="{{order.order_number}}">
+              <input type="hidden" name="session_id" value="{{order.ip_address}}">
+              <input type="hidden" name="amount" value="{{grand_total}}">
+              <input type="hidden" name="card_number" value="4051885600446623">
+              <input type="hidden" name="cvv" value="123">
+              <input type="hidden" name="card_expiration_date" value="26/05">
+              <button name="submit" class="btn btn-primary btn-block">PAGAR</button>
+            </form>
           </div>
       </aside>
     </div>
