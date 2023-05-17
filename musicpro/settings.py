@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "almacen",
     "carts",
     "orders",
+    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [

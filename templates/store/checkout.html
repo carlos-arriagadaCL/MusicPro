@@ -1,5 +1,8 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-
+{% load humanize %}
+{% load i18n %}
+{% load l10n %}
+{% language 'de' %}
 <section class="section-content padding-y bg">
   <div class="container">
 
@@ -101,9 +104,9 @@
                     </td>
                     <td>
                       <div class="price-wrap">
-                        <var class="price">$ {{ cart_item.sub_total }}</var>
+                        <var class="price">$ {{ cart_item.sub_total|intcomma }}</var>
                         <small class="text-muted">
-                          $ {{ cart_item.product.precio }} c/u
+                          $ {{ cart_item.product.precio|intcomma }} c/u
                         </small>
                       </div>
                     </td>
@@ -111,6 +114,8 @@
                   {% endfor %}
                 </tbody>
               </table>
+              <h5 class="h5 text-right">IVA(19%): ${{tax|intcomma}}</h5>
+              <h5 class="h5 text-right">Total a pagar: ${{grand_total|intcomma}}</h5>
             <button name="submit" class="btn btn-primary btn-block">Realizar pedido</button>
             <a href="{% url 'store' %}" class="btn btn-light btn-block">Seguir comprando</a>
           </div>
@@ -120,4 +125,5 @@
     </div>
   </div>
 </section>
+{% endlanguage %}
 {% endblock %}
