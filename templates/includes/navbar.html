@@ -19,7 +19,11 @@
           <li class="nav-item">
             <a href="{% url 'change_currency'%}" class="nav-link">
               <button type="button" class="btn btn-light"> CLP </button>
-              <p class="btn btn-light">Dolar hoy: {{request.session.currency_value}}</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'change_currency'%}" class="nav-link">
+              <button class="btn btn-light">Dolar hoy: $ {{request.session.currency_value}} CLP</button>
             </a>
           </li>
           {% else %}

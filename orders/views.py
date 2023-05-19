@@ -7,6 +7,7 @@ from transbank.webpay.transaccion_completa.transaction import *
 from transbank.common.integration_type import *
 import requests
 from django.views.decorators.csrf import csrf_exempt
+from decimal import Decimal
 
 # Create your views here.
 
@@ -48,7 +49,7 @@ def realizar_pago(request):
             # Aquí puedes procesar la respuesta de la API
             return redirect(respuesta['url']+f'?token_ws={respuesta["token"]}')
         else:
-            return render(request, 'orders/payments.html')
+            return render(request, 'orders/payments_complete_fail.html')
 
 @csrf_exempt
 def payments_complete(request):

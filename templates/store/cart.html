@@ -79,7 +79,7 @@
                           action="{% url 'add_cart' cart_item.product.id %}"
                           method="POST"
                         >
-                          {% csrf_token %} 
+                          {% csrf_token %}
                           {% for item in cart_item.variations.all %}
                           <input
                             type="hidden"
@@ -101,9 +101,9 @@
                 </td>
                 <td>
                   <div class="price-wrap">
-                    <var class="price">$ {{ cart_item.sub_total|intcomma }}</var>
+                    <var class="price">${% widthratio cart_item.sub_total request.session.currency_value 1 as sub_total%}{{sub_total|intcomma}} {{request.session.currency}}</var>
                     <small class="text-muted">
-                      $ {{ cart_item.product.precio|intcomma }} c/u
+                      ${% widthratio cart_item.product.precio request.session.currency_value 1 as sub_total%}{{sub_total|intcomma}} {{request.session.currency}} c/u
                     </small>
                   </div>
                 </td>
@@ -127,16 +127,16 @@
           <div class="card-body">
             <dl class="dlist-align">
               <dt>Precio total:</dt>
-              <dd class="text-right">$ {{total|intcomma}}</dd>
+              <dd class="text-right">${% widthratio total request.session.currency_value 1 as total%}{{total|intcomma}} {{request.session.currency}}</dd>
             </dl>
             <dl class="dlist-align">
               <dt>IVA(%19):</dt>
-              <dd class="text-right">${{tax|intcomma}}</dd>
+              <dd class="text-right">${% widthratio tax request.session.currency_value 1 as tax%}{{tax|intcomma}} {{request.session.currency}}</dd>
             </dl>
             <dl class="dlist-align">
               <dt>Total + IVA:</dt>
               <dd class="text-right text-dark b">
-                <strong>${{grand_total|intcomma}}</strong>
+                <strong>${% widthratio grand_total request.session.currency_value 1 as grand_total%}{{grand_total|intcomma}} {{request.session.currency}}</strong>
               </dd>
             </dl>
             <hr />

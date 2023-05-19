@@ -25,7 +25,7 @@
       <a href="{% url 'store' %}" class="btn btn-outline-primary float-right"
         >Ver todo</a
       >
-      <h3 class="section-title">Productos populares {{dolar}}</h3>
+      <h3 class="section-title">Productos populares</h3>
     </header>
     <!-- sect-heading -->
 
@@ -43,11 +43,8 @@
               >
               <a href="{{ producto.get_url }}" class="price mt-1">
                 {% if producto.precio != 0 %}
-                  {% if request.session.currency == 'USD' %}
-                    <div class="price mt-1">$ {% widthratio producto.precio request.session.currency_value 1%} {{request.session.currency}}</div>
-                  {% else %}
-                    <div class="price mt-1">$ {{ producto.precio | intcomma}} {{request.session.currency}}</div>
-                  {% endif %}
+                  <div class="price mt-1">${% widthratio producto.precio request.session.currency_value 1 as precio%}{{precio|intcomma}} {{request.session.currency}}
+                  </div>
                 {% else %}
                   <div class="price mt-1">No hay stock</div>
                 {% endif %}

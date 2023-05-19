@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from almacen.models import Producto
 from .context_processors import dolar_api
 
@@ -21,4 +22,4 @@ def change_currency(request):
         request.session['currency'] = 'CLP'
         request.session['currency_value'] = 1
 
-    return redirect('home')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

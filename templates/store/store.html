@@ -163,8 +163,12 @@
                     >{{ producto.nombre }}</a
                   >
                   <div class="price-wrap mt-2">
-                    <span class="price">${{ producto.precio|intcomma }}</span>
-                    {% comment %} <del class="price-old">$1980</del> {% endcomment %}
+                    {% if producto.precio != 0 %}
+                      <div class="price mt-1">${% widthratio producto.precio request.session.currency_value 1 as precio%}{{precio|intcomma}} {{request.session.currency}}
+                      </div>
+                    {% else %}
+                    <div class="price mt-1">No hay stock</div>
+                    {% endif %}
                   </div>
                   <!-- price-wrap.// -->
                 </div>

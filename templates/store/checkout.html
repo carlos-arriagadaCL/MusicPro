@@ -100,13 +100,13 @@
                       </figure>
                     </td>
                     <td>
-                      <label for="">{{cart_item.quantity}}</label>
+                      <label for="">{{cart_item.quantity}} u.</label>
                     </td>
                     <td>
                       <div class="price-wrap">
-                        <var class="price">$ {{ cart_item.sub_total|intcomma }}</var>
+                        <var class="price">$ {% widthratio cart_item.sub_total request.session.currency_value 1 as sub_total%}{{sub_total|intcomma}} {{request.session.currency}}</var>
                         <small class="text-muted">
-                          $ {{ cart_item.product.precio|intcomma }} c/u
+                          $ {% widthratio cart_item.product.precio request.session.currency_value 1 as precio%}{{precio|intcomma}} {{request.session.currency}} c/u
                         </small>
                       </div>
                     </td>
@@ -114,8 +114,8 @@
                   {% endfor %}
                 </tbody>
               </table>
-              <h5 class="h5 text-right">IVA(19%): ${{tax|intcomma}}</h5>
-              <h5 class="h5 text-right">Total a pagar: ${{grand_total|intcomma}}</h5>
+              <h5 class="h5 text-right">IVA(19%): $ {% widthratio tax request.session.currency_value 1 as tax%}{{tax|intcomma}} {{request.session.currency}}</h5>
+              <h5 class="h5 text-right">Total a pagar: $ {% widthratio grand_total request.session.currency_value 1 as grand_total%}{{grand_total|intcomma}} {{request.session.currency}}</h5>
             <button name="submit" class="btn btn-primary btn-block">Realizar pedido</button>
             <a href="{% url 'store' %}" class="btn btn-light btn-block">Seguir comprando</a>
           </div>
