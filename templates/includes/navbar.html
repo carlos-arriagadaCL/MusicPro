@@ -15,12 +15,20 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarTop4">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link"> English </a>
+          {% if request.session.currency == 'USD' %}
+          <li class="nav-item">
+            <a href="{% url 'change_currency'%}" class="nav-link">
+              <button type="button" class="btn btn-light"> CLP </button>
+              <p class="btn btn-light">Dolar hoy: {{request.session.currency_value}}</p>
+            </a>
           </li>
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link"> USD </a>
+          {% else %}
+          <li class="nav-item">
+            <a href="{% url 'change_currency'%}" class="nav-link">
+            <button type="button" class="btn btn-light"> USD </button>
+            </a>
           </li>
+          {% endif %}
         </ul>
         <ul class="navbar-nav">
           <li>

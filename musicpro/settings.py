@@ -30,7 +30,7 @@ SECRET_KEY = "django-insecure-@p_sk&8%&_4gx3epo4uemhj)bf2h%+v*+e!e*#wrr^^s@wfdcd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,6 +77,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "categoria.context_processors.menu_links",
                 "carts.context_processors.counter",
+                "musicpro.context_processors.dolar_api"
             ],
         },
     },
@@ -90,10 +91,14 @@ AUTH_USER_MODEL = 'cuenta.Cuenta'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
+    "default": env.db('DATABASE_URL'),
+}
+
+CACHES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     }
 }
 

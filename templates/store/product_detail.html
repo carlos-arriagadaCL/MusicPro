@@ -36,6 +36,7 @@
               <hr />
               <div class="row">
                 <div class="item-option-select">
+                  {% if single_product.variation_set.colors %}
                   <h6>Color:</h6>
                   <select name="color" class="form-control" required>
                     <option value="" disabled selected>Escoger color</option>
@@ -45,10 +46,12 @@
                     </option>
                     {% endfor %}
                   </select>
+                  {% endif %}
                 </div>
               </div>
               <div class="row">
                 <div class="item-option-select">
+                  {% if single_product.variation_set.sizes %}
                   <h6>Tamaño:</h6>
                   <select name="tamaño" class="form-control">
                     <option value="" disabled selected>Escoger tamaño</option>
@@ -58,6 +61,7 @@
                     </option>
                     {% endfor %}
                   </select>
+                  {% endif %}
                 </div>
               </div>
               <hr />
