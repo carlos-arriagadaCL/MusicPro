@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 
+from django_add_default_value import AddDefaultValue
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -14,4 +15,9 @@ class Migration(migrations.Migration):
             name="telefono",
             field=models.CharField(blank=True, max_length=9),
         ),
+        AddDefaultValue(
+            model_name='cuenta',
+            name='is_active',
+            value=True
+        )
     ]
